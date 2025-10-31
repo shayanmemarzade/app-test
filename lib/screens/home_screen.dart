@@ -111,30 +111,36 @@ class HomeScreen extends StatelessWidget {
         ),
         SliverPadding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
-          sliver: SliverList.separated(
-            itemCount: whatsNew.length,
-            itemBuilder: (context, index) {
-              final item = whatsNew[index];
-              return Card(
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.orange[100],
-                    child: const Icon(Icons.cake, color: Color(0xFFFF8A65)),
-                  ),
-                  title: Text(
-                    item,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w500,
+          sliver: SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                if (index.isOdd) {
+                  return const SizedBox(height: 16);
+                }
+
+                final item = whatsNew[index ~/ 2];
+                return Card(
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.orange[100],
+                      child: const Icon(Icons.cake, color: Color(0xFFFF8A65)),
+                    ),
+                    title: Text(
+                      item,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.chevron_right),
+                      onPressed: onNavigateToGift,
                     ),
                   ),
-                  trailing: IconButton(
-                    icon: const Icon(Icons.chevron_right),
-                    onPressed: onNavigateToGift,
-                  ),
-                ),
-              );
-            },
-            separatorBuilder: (_, __) => const SizedBox(height: 16),
+                );
+              },
+              childCount:
+                  whatsNew.isEmpty ? 0 : (whatsNew.length * 2) - 1,
+            ),
           ),
         ),
         const SliverPadding(padding: EdgeInsets.only(bottom: 120)),
